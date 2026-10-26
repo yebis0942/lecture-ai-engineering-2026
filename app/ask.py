@@ -30,7 +30,11 @@ def print_usage(response) -> None:
     if usage is None:
         print("[tokens] 取得できませんでした")
         return
-    print(f"[tokens] 入力: {usage.prompt_token_count} / 出力: {usage.candidates_token_count}")
+    # cached は入力のうち implicit cache にヒットした分（ヒットしなければ None）
+    print(
+        f"[tokens] 入力: {usage.prompt_token_count} / 出力: {usage.candidates_token_count}"
+        f" / cached: {usage.cached_content_token_count}"
+    )
 
 
 def ask(question: str) -> str:
