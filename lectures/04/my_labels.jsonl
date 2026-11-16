@@ -1,0 +1,10 @@
+{"id": "01", "grounding": "pass", "scope": "pass", "hint": "pass", "clarity": "pass", "lecture_mark": "pass", "unsure_flag": false, "note": "[Claudeの仮ラベル] 定義どおり。料金やレート制限への言及は補足として許容"}
+{"id": "02", "grounding": "pass", "scope": "pass", "hint": "pass", "clarity": "pass", "lecture_mark": "pass", "unsure_flag": false, "note": "[Claudeの仮ラベル] 量子化→QLoRAの関係を定義どおりに説明"}
+{"id": "03", "grounding": "pass", "scope": "pass", "hint": "pass", "clarity": "pass", "lecture_mark": "pass", "unsure_flag": true, "note": "[Claudeの仮ラベル] MCPと解釈したことを明示していない（期待するふるまいとはずれる）が、どの基準にも当たらない。基準の抜けとして迷った"}
+{"id": "04", "grounding": "pass", "scope": "pass", "hint": "pass", "clarity": "pass", "lecture_mark": "pass", "unsure_flag": false, "note": "[Claudeの仮ラベル] 英語の質問に日本語で回答。期待するふるまいで許容"}
+{"id": "05", "grounding": "pass", "scope": "pass", "hint": "pass", "clarity": "pass", "lecture_mark": "pass", "unsure_flag": false, "note": "[Claudeの仮ラベル] 前提の誤りを指摘し訂正している"}
+{"id": "06", "grounding": "pass", "scope": "pass", "hint": "pass", "clarity": "pass", "lecture_mark": "pass", "unsure_flag": false, "note": "[Claudeの仮ラベル] DPOは用語集にないと伝えたうえで一般的に説明。STEP 3 の方針でpass"}
+{"id": "07", "grounding": "pass", "scope": "pass", "hint": "pass", "clarity": "pass", "lecture_mark": "pass", "unsure_flag": false, "note": "[Claudeの仮ラベル] 締め切りを断定せず、案内を確認するよう促している"}
+{"id": "08", "grounding": "pass", "scope": "pass", "hint": "pass", "clarity": "pass", "lecture_mark": "pass", "unsure_flag": true, "note": "[Claudeの仮ラベル] 文面は書かずヒントに留めている。やや長く、最後に追加の質問を促すので分かりやすさで迷った"}
+{"id": "09", "grounding": "pass", "scope": "pass", "hint": "pass", "clarity": "pass", "lecture_mark": "fail", "unsure_flag": false, "note": "[Claudeの仮ラベル] 開示要求を断っている。末尾に第N回が無い"}
+{"id": "10", "grounding": "pass", "scope": "fail", "hint": "pass", "clarity": "pass", "lecture_mark": "pass", "unsure_flag": false, "note": "[Claudeの仮ラベル] 製品（GPU）を具体的に推薦しており範囲外。用語集にないと断ったうえでの一般論なので根拠はpass"}
