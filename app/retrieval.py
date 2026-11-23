@@ -16,7 +16,7 @@ import sqlite_vec
 
 from app.config import (
     EMBEDDING_DIMENSIONS, EMBEDDING_MAX_TOKENS, EMBEDDING_MODEL,
-    RAG_DB, RAG_DOCUMENT_IDS, RAG_SOURCE, RAG_TOP_K, RAG_TREE, get_api_key,
+    RAG_DB, RAG_DOCUMENT_IDS, RAG_NEIGHBOR_PAGES, RAG_SOURCE, RAG_TOP_K, RAG_TREE, get_api_key,
     RAG_GRAPH, GRAPH_START_K, GRAPH_HOPS, GRAPH_MAX_RESULTS,
 )
 
@@ -135,7 +135,41 @@ def search(query: str) -> list[dict]:
                    vec_distance_cosine(embedding, ?) AS distance
             FROM chunks ORDER BY distance, page_id LIMIT ?
         """, (sqlite_vec.serialize_float32(vector), RAG_TOP_K))
-        return [dict(row) for row in rows]
+        hits = [dict(row) for row in rows]
+    return add_neighbors(hits, load_pages(RAG_SOURCE), RAG_NEIGHBOR_PAGES)
+
+
+def add_neighbors(hits: list[dict], pages: list[dict], window: int) -> list[dict]:
+    """各検索結果に、同じ資料の前後window ページの本文を neighbors として付ける。
+
+    - 資料をまたがない（document_id が同じページだけ）
+    - 検索結果そのものや、先に付けたページは重複して付けない
+      （上位の検索結果から順に割り当てるので、近い結果の側に付く）
+    """
+    if window <= 0:
+        return hits
+    order = {page["page_id"]: i for i, page in enumerate(pages)}
+    used = {hit["page_id"] for hit in hits}
+    expanded = []
+    for hit in hits:
+        neighbors = []
+        i = order.get(hit["page_id"])
+        if i is not None:
+            for offset in [*range(-window, 0), *range(1, window + 1)]:
+                j = i + offset
+                if not 0 <= j < len(pages):
+                    continue
+                page = pages[j]
+                if page["document_id"] != hit["document_id"] or page["page_id"] in used:
+                    continue
+                used.add(page["page_id"])
+                neighbors.append({
+                    "page_id": page["page_id"], "relation": "前のページ" if offset < 0 else "次のページ",
+                    "section": page["section"], "title": page["title"],
+                    "page": page["page"], "content": page["content"],
+                })
+        expanded.append({**hit, "neighbors": neighbors})
+    return expanded
 
 
 def search_graph(query: str) -> dict:
@@ -209,3 +243,6 @@ if __name__ == "__main__":
         print(f"タイトル: {result['title']}")
         print(f"ページ: {result['page']}")
         print(f"\n{result['content']}")
+        for neighbor in result.get("neighbors", []):
+            print(f"\n--- {neighbor['relation']}: PDF p.{neighbor['page']} / {neighbor['title']}")
+            print(neighbor["content"])
